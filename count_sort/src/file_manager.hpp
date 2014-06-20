@@ -21,7 +21,6 @@ class file_manager
 
     path root_dir_;
     vpath files_;
-    vpath visited_dirs_;
     vint filenames_map_;
     future_queue remaining_dirs_;
 

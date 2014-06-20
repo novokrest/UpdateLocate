@@ -51,11 +51,8 @@ void file_manager::safe_add_file(path const & file)
 void file_manager::safe_add_visited_dir(path const & dir, thread_pool & thread_pool)
 {
     boost::lock_guard<boost::mutex> locker(lock_);
-    if (std::find(visited_dirs_.begin(), visited_dirs_.end(), dir) == visited_dirs_.end()) {
-        visited_dirs_.push_back(dir);
-        boost::shared_future<void> dir_future = thread_pool.add_task(boost::bind(&file_manager::get_files_from_dir, this, dir, boost::ref(thread_pool)));
-        remaining_dirs_.push(dir_future);
-    }
+    boost::shared_future<void> dir_future = thread_pool.add_task(boost::bind(&file_manager::get_files_from_dir, this, dir, boost::ref(thread_pool)));
+    remaining_dirs_.push(dir_future);
 }
 
 bool file_manager::is_found() const
